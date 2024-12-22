@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from scipy.io import loadmat
 
 
 
@@ -51,7 +52,6 @@ def plot_map(matrix):
 #Dirictions in x and y axis
 dx = [+0, +1, -1, +0, +1, +1, -1, -1]
 dy = [-1, +0, +0, +1, -1, +1, +1, -1]
-#valid_indix function that ensures that we're not exceeding the borders of the map
 def valid_indix(r, c, n, m):
     return 0 <= r < n and 0 <= c < m
 
@@ -152,28 +152,46 @@ def planner(map, start_row, start_column):
     #Use the track_the_path function that gets the optimal path 
     trajectory=track_the_path(value_map,(start_row,start_column),(goal_x,goal_y))
 
-    #Visualize the path and the map
-    visualize_path(value_map, trajectory)
-    plot_map(np.array(value_map))
+   
 
     return value_map,trajectory
     
 
-def test():
-    '''
-    This function for testing and taking input map and start position from the user in the Terminal
+def test1():
     
-    '''
-    n, m = 14, 20
-    print('Enter the start position')
-    x, y = map(int, input().split())
-    grid = []
-    print("Enter the map: ")
-    for i in range(n):
-        row = list(map(int, input().split()))
-        grid.append(row)
-       
-        
-    test_map,path =planner(grid,x,y)
+    map = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ]
+         
+    value_map,trajectory =planner(map,13,2)
+    
+    visualize_path(value_map, trajectory)
+    plot_map(np.array(value_map))
  
+
+def test2():
    
+    
+    mat_data = loadmat("maze.mat")
+
+    #it's essintial to convert the np array to a list
+    map = mat_data['map'].tolist()
+    value_map,trajectory=planner(map,45,4)
+    visualize_path(value_map, trajectory)
+    
+ 
+
+test1()
