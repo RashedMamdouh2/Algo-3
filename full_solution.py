@@ -51,6 +51,7 @@ def plot_map(matrix):
 #Dirictions in x and y axis
 dx = [+0, +1, -1, +0, +1, +1, -1, -1]
 dy = [-1, +0, +0, +1, -1, +1, +1, -1]
+#valid_indix function that ensures that we're not exceeding the borders of the map
 def valid_indix(r, c, n, m):
     return 0 <= r < n and 0 <= c < m
 
