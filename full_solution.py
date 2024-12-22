@@ -108,9 +108,11 @@ def track_the_path(grid, start, goal):
 
 def solve():
     n, m = 14, 20
+    print('Enter the start position (zero-based)')
     x, y = map(int, input().split())
     goalX, goalY = x, y
     grid = []
+    print("Enter the map: ")
     for i in range(n):
         row = list(map(int, input().split()))
         grid.append(row)
