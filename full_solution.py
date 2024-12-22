@@ -1,3 +1,54 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+
+
+
+def visualize_path(map_data, trajectory):
+    """
+    Visualizes the environment and the planned trajectory
+    
+    Args:
+        map_data (list): 2D list representing the environment
+        trajectory (list): List of coordinates representing the path
+    """
+    plt.figure(figsize=(12, 8))
+    plt.imshow(map_data, cmap='binary')
+    
+    # Plot trajectory
+    traj_y, traj_x = zip(*trajectory)
+    plt.plot(traj_x, traj_y, 'r-', linewidth=2, label='Trajectory')
+    
+    plt.grid(True)
+    plt.legend()
+    plt.title('Wavefront Planner Path')
+    plt.show()
+
+def plot_map(matrix):
+    # Define the colors for the cells
+    # 0 -> white, 1 -> grey, 2 -> green, other -> red
+    cmap = mcolors.ListedColormap(['grey', 'green', 'red', 'white'])
+
+    masked_matrix = np.where((matrix == 0) | (matrix == 1) | (matrix == 2), matrix, 3)
+
+    
+    fig, ax = plt.subplots()
+
+  
+    cax = ax.imshow(masked_matrix, cmap=cmap, interpolation='nearest')
+
+    rows, cols = matrix.shape
+    for i in range(rows):
+        for j in range(cols):
+            ax.text(j, i, str(int(matrix[i, j])), ha='center', va='center', color='black', fontsize=8)
+
+    ax.axis('off')
+    # Show the plot without axes and color bar
+    plt.show()
+
+
+
+
 dx = [+0, +1, -1, +0, +1, +1, -1, -1]
 dy = [-1, +0, +0, +1, -1, +1, +1, -1]
 def validIndix(r, c, n, m):
@@ -57,25 +108,31 @@ def track_the_path(grid, start, goal):
 
 def solve():
     n, m = 14, 20
+    print('Enter the start position (zero-based)')
     x, y = map(int, input().split())
     goalX, goalY = x, y
     grid = []
+    print("Enter the map: ")
     for i in range(n):
         row = list(map(int, input().split()))
         grid.append(row)
         for j in range(m):
             if grid[i][j] == 2:
                 x, y = i, j
-
+        
+    
+    test_map=grid
     bfs(x, y, grid)
-    for r in grid:
-        for c in r:
-            print(c, end=" ")
-        print()
+    # for r in grid:
+    #     for c in r:
+    #         print(c, end=" ")
+    #     print()
 
     path = track_the_path(grid, (goalX, goalY), (x, y))
-    for p in path:
-        print(p[0], p[1])
+    # for p in path:
+    #     print(p[0], p[1])
+    visualize_path(test_map, path)
+    plot_map(np.array(grid))
 
 
 
